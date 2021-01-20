@@ -10,7 +10,7 @@ request = {
     "buy": "flag"
 }
 
-conn = remote(HOST,PORT)
+conn = remote(HOST, PORT)
 
 json_obj = json.dumps(request).encode()
 
@@ -20,4 +20,3 @@ print(conn.recvline())
 print(conn.recvline())
 conn.sendline(json_obj)
 conn.interactive()
-
