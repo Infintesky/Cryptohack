@@ -1,34 +1,23 @@
 #!/usr/bin/env python3
 
-import telnetlib
+from pwn import *
 import json
 
 HOST = "socket.cryptohack.org"
 PORT = 11112
 
-tn = telnetlib.Telnet(HOST, PORT)
-
-# function to read line returned from server
-def readline():
-    return tn.read_until(b"\n")
-
-def json_recv():
-    line = readline()
-    return json.loads(line.decode())
-
-def json_send(hsh):
-    request = json.dumps(hsh).encode()
-    tn.write(request)
-
-print(readline())
-print(readline())
-print(readline())
-print(readline())
-
 request = {
     "buy": "flag"
 }
 
-json_send(request)
-response = json_recv()
-print(response)
+conn = remote(HOST,PORT)
+
+json_obj = json.dumps(request).encode()
+
+print(conn.recvline())
+print(conn.recvline())
+print(conn.recvline())
+print(conn.recvline())
+conn.sendline(json_obj)
+conn.interactive()
+
